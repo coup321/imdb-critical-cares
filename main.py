@@ -1,14 +1,20 @@
 from src.train_model import adam_w_optimizer
+from src.load_data import load_data
 from models.BERT_LR_Classifier import BERT_LR_Preprocesser, BERT_LR_Classifier
+from pathlib import Path
 import tensorflow as tf
 
-DATA_DIR = "./data/raw"
+DATA_DIR = Path("./data/raw")
 LOG_DIR = "./logs"
 EPOCHS = 5
 LEARNING_RATE = 5e-5
 BATCH_SIZE = 16
-PREPROCESSER = 'BERT_LR_Classifier'
+PREPROCESSER = 'BERT_LR_Preprocesser'
 MODEL = 'BERT_LR_Classifier'
+
+preprocesser_dict = {
+    'BERT_LR_Preprocesser' : BERT_LR_Preprocesser()
+}
 
 models = {
     'BERT_LR_Classifier' : BERT_LR_Classifier()
@@ -16,7 +22,7 @@ models = {
 
 def main(preprocesser=PREPROCESSER, model=MODEL, tpu=False, val=True, test=False):
     #load data
-    data = [0,0,0]
+    train, val, test = load_data(batch_size=32,train_size=0.6, data_dir=DATA_DIR)
 
     #preprocess data
     data = [preprocesser(dataset) for dataset in data]
