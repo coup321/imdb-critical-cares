@@ -1,12 +1,14 @@
+from msilib.schema import Class
 
 
-
-class BERT_LR_Model:
+class Preprocessor:
     pass
 
-class BERT_LR_preprocess:
+class Classifier
+
+class BERT_LR_Preprocesser(Preprocessor):
     pass
 
-class BERT_LR_Classifier:
+class BERT_LR_Classifier(Classifier):
     pass
 
