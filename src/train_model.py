@@ -39,3 +39,12 @@ def adam_w_optimizer(learning_rate, epochs, steps_per_epoch):
         optimizer_type='adamw'
         )
     return optimizer
+
+def load_tpu():
+    tpu = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='') #get cluster
+    print('Running on TPU ', tpu.cluster_spec().as_dict()['worker'])
+
+    tf.config.experimental_connect_to_cluster(tpu) #connect to cluster
+    tf.tpu.experimental.initialize_tpu_system(tpu) #initialize cluster
+    print(f'Number of TPU workers: ', tpu_strategy.num_replicas_in_sync)
+    return tf.distribute.TPUStrategy(tpu)  #define TPU strategy

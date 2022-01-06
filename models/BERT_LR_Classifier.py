@@ -1,22 +1,29 @@
 from msilib.schema import Class
 import tensorflow as tf
 import tensorflow_hub as hub
+import tensorflow_text as text
 
 class BERT_LR_Preprocesser(tf.keras.Model):
-    def __init__(self, layers, seq_length, handle):
+    def __init__(self, added_layers, seq_length, preprocess_handle):
         super().__init__(name='preprocess')
-        self.layers = layers
-        self.handle=handle
+        self.added_layers = added_layers
+        self.preprocess_handle = preprocess_handle
         self.seq_length = seq_length
-
-        self.preprocess_model = hub.load(self.handle) 
-        self.tokenizer = hub.KerasLayer(self.preprocess_model.tokenize, name='tokenizer')
-        self.packer = hub.KerasLayer(self.preprocess_model.bert_pack_inputs,
-                          arguments=dict(seq_length=self.seq_length), name='packer')
     
     def call(self, words):
-        return tf.Sequential(layers = self.layers + [self.tokenizer, self.packer])(words)
-     
+        preprocess_model = hub.load(self.preprocess_handle) 
+        tokenizer = hub.KerasLayer(preprocess_model.tokenize, name='tokenizer')
+        packer = hub.KerasLayer(preprocess_model.bert_pack_inputs,
+                          arguments=dict(seq_length=self.seq_length), name='packer')
+
+        input = tf.keras.layers.Input(shape=(), dtype=tf.string, name='text')
+        x = [tokenizer(input)]
+        output = packer(x)
+        return tf.keras.Model(input, output)(words)
+
+#tfhub_handle_preprocess = 'https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3'
+#tok = BERT_LR_Preprocesser([], 128, tfhub_handle_preprocess)(tf.constant(['is this thing on']))
+
 class BERT_LR_Classifier(tf.keras.Model):
     def __init__(self, encoder_handle):
         super().__init__(name='prediction')
@@ -30,3 +37,7 @@ class BERT_LR_Classifier(tf.keras.Model):
         x = self.dropout(pooled_output)
         x = self.dense(x)
         return x
+
+#tfhub_handle_encoder = 'https://tfhub.dev/google/experts/bert/pubmed/2'
+#encoder = BERT_LR_Classifier(tfhub_handle_encoder)(tok)
+#print(encoder)
