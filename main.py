@@ -5,11 +5,19 @@ from models.BERT_LR_Classifier import BERT_LR_Preprocesser, BERT_LR_Classifier
 from pathlib import Path
 import tensorflow as tf
 tf.get_logger().setLevel('ERROR') 
+import os
 
 
-EPOCHS = 5
+#gpus = tf.config.list_physical_devices('GPU')
+#tf.config.experimental.set_memory_growth(gpus[0], True)
+#tf.config.set_logical_device_configuration(gpus[0], tf.config.LogicalDeviceConfiguration(memory_limit=2048))
+
+#os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
+
+
+EPOCHS = 2
 LEARNING_RATE = 5e-5
-BATCH_SIZE = 16
+BATCH_SIZE = 1
 TRAIN_SIZE = 0.6
 TEST = False
 DATA_DIR = Path("./data/raw")
@@ -34,13 +42,15 @@ models = {
 
 def main():
     #load data
-    train, val, test = load_data(batch_size=32,train_size=TRAIN_SIZE, data_dir=DATA_DIR)
+    train, val, test = load_data(batch_size=BATCH_SIZE,train_size=TRAIN_SIZE, data_dir=DATA_DIR)
     if TEST:
         train = test
 
     #preprocess data
     preprocesser = preprocesser_dict[PREPROCESSER]
-    processed_train, processed_val = preprocesser(train), preprocesser(val)
+    #AUTOTUNE = tf.data.AUTOTUNE
+    processed_train = train.map(lambda x, y: (preprocesser(x), y)).cache().prefetch(1)
+    processed_val = val.map(lambda x, y: (preprocesser(x), y)).cache().prefetch(1)  
 
     if USE_TPU:
         tpu_strategy = load_tpu()
@@ -66,3 +76,4 @@ def main():
 
 if __name__ =="__main__":
     main()
+

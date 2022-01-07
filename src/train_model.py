@@ -30,7 +30,7 @@ class Trainer:
 
 def adam_w_optimizer(learning_rate, epochs, steps_per_epoch):
     num_train_steps = steps_per_epoch * epochs
-    num_warmup_steps = num_training_steps // 10
+    num_warmup_steps = num_train_steps // 10
 
     optimizer = optimization.create_optimizer(
         init_lr=learning_rate,
