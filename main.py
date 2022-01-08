@@ -17,6 +17,7 @@ LOG_DIR = "./logs"
 PREPROCESSER = 'BERT_LR_Preprocesser'
 MODEL = 'BERT_LR_Classifier'
 USE_TPU = False
+AUTOTUNE = tf.data.AUTOTUNE
 
 tfhub_handle_preprocess = 'https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3'
 tfhub_handle_encoder = 'https://tfhub.dev/google/experts/bert/pubmed/2'
@@ -37,9 +38,8 @@ def main():
 
     #preprocess data
     preprocesser = preprocesser_dict[PREPROCESSER]
-    #AUTOTUNE = tf.data.AUTOTUNE
-    processed_train = train.map(lambda x, y: (preprocesser(x), y)).cache().prefetch(1)
-    processed_val = val.map(lambda x, y: (preprocesser(x), y)).cache().prefetch(1)  
+    processed_train = train.map(lambda x, y: (preprocesser(x), y)).cache().prefetch(AUTOTUNE)
+    processed_val = val.map(lambda x, y: (preprocesser(x), y)).cache().prefetch(AUTOTUNE)  
 
     if USE_TPU:
         tpu_strategy = load_tpu()
