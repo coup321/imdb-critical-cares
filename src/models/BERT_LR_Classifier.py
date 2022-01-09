@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorflow_hub as hub
 import tensorflow_text as text
 
-class BERT_LR_Preprocesser(tf.keras.Model):
+class BERT_LR_Preprocessor(tf.keras.Model):
     def __init__(self, added_layers, seq_length, preprocess_handle):
         super().__init__(name='preprocess')
         self.added_layers = added_layers
