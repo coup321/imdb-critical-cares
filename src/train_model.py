@@ -35,7 +35,7 @@ class Trainer:
         self.epochs = epochs
 
     def _adam_w_optimizer(self, learning_rate, epochs):
-        steps_per_epoch = 
+        steps_per_epoch = self.train.cardinality().numpy()
         num_train_steps = steps_per_epoch * epochs
         num_warmup_steps = num_train_steps // 10
 
