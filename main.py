@@ -15,7 +15,7 @@ TEST = False
 LOG_DIR = "./logs"
 PREPROCESSOR = 'BERT_LR_Preprocessor'
 MODEL = 'BERT_LR_Classifier'
-USE_TPU = True
+USE_TPU = False
 AUTOTUNE = tf.data.AUTOTUNE
 
 preprocessor_dict = {
