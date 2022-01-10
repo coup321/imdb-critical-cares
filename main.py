@@ -27,6 +27,8 @@ models = {
 }
 
 def main():
+    if USE_TPU:
+        tpu_strategy = load_tpu()
     #load data
     train, val, test = load_data(batch_size=BATCH_SIZE,train_size=TRAIN_SIZE)
 
@@ -39,7 +41,7 @@ def main():
 
     #define model and train
     if USE_TPU:
-      with load_tpu().scope():
+      with tpu_strategy.scope():
         train_model(processed_train, processed_val, models['BERT_LR_Classifier'], LEARNING_RATE, EPOCHS)
     else:
         train_model(processed_train, processed_val, models['BERT_LR_Classifier'], LEARNING_RATE, EPOCHS)
