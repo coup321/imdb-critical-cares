@@ -20,7 +20,7 @@ class Trainer:
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
 
-    def train(self):
+    def train_model(self):
         steps_per_epoch = self.train.cardinality().numpy()
         history = self.model.fit(x=self.train,
                                  validation_data=self.val,
@@ -61,5 +61,6 @@ def train_model(train, val, model_handle, learning_rate, epochs):
     model = BERT_LR_Classifier(model_handle)
     trainer = Trainer(train, val, model)
     trainer.compile_model(learning_rate, epochs)
-    history = trainer.train()
+    history = trainer.train_model()
+    return history
         
