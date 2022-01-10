@@ -1,6 +1,6 @@
 import tensorflow as tf
 from official.nlp import optimization
-from models.BERT_LR_Classifier import BERT_LR_Classifier
+from src.models.BERT_LR_Classifier import BERT_LR_Classifier
 
 class Trainer:
     def __init__(self, train, val, model, tpu_strategy=None):
