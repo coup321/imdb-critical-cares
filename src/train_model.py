@@ -48,7 +48,7 @@ class Trainer:
         return optimizer
 
 
-def load_tpu(self):
+def load_tpu():
     tpu = tf.distribute.cluster_resolver.TPUClusterResolver(tpu='') #get cluster
     print('Running on TPU ', tpu.cluster_spec().as_dict()['worker'])
     tf.config.experimental_connect_to_cluster(tpu) #connect to cluster
