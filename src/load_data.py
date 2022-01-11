@@ -18,7 +18,7 @@ def load_data(batch_size, train_size):
     """
     #Allows function to write to local file system and then load to memory
     with tf.device('/job:localhost'):
-      ds, info = tfds.load(name='imdb_reviews', with_info=True, batch_size=-1, try_gcs=True)
+      ds, info = tfds.load(name='imdb_reviews', with_info=True, batch_size=-1)
 
     #number of rows in un-split dataset (train + val) = 25000 for imdb_reviews
     ds_size = ds['train']['label'].numpy().shape[0]

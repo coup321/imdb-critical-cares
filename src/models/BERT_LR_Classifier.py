@@ -20,9 +20,6 @@ class BERT_LR_Preprocessor(tf.keras.Model):
         output = packer(x)
         return tf.keras.Model(input, output)(words)
 
-#tfhub_handle_preprocess = 'https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3'
-#tok = BERT_LR_Preprocesser([], 128, tfhub_handle_preprocess)(tf.constant(['is this thing on']))
-
 class BERT_LR_Classifier(tf.keras.Model):
     def __init__(self, encoder_handle):
         super().__init__(name='prediction')
@@ -36,7 +33,3 @@ class BERT_LR_Classifier(tf.keras.Model):
         x = self.dropout(pooled_output)
         x = self.dense(x)
         return x
-
-#tfhub_handle_encoder = 'https://tfhub.dev/google/experts/bert/pubmed/2'
-#encoder = BERT_LR_Classifier(tfhub_handle_encoder)(tok)
-#print(encoder)
