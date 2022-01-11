@@ -45,9 +45,9 @@ def main():
     #define model and train
     if USE_TPU:
       with tpu_strategy.scope():
-        train_model(processed_train, processed_val, preprocessor_dict[MODEL], LEARNING_RATE, EPOCHS)
+        train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS)
     else:
-        train_model(processed_train, processed_val, preprocessor_dict[MODEL], LEARNING_RATE, EPOCHS)
+        train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS)
 
 if __name__ =="__main__":
     main()
