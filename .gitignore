@@ -1,5 +1,8 @@
 # User ignores
 data
+imdb_env/
+./imdb_env/
+.imdb_env
 imdb_env
 
 # Byte-compiled / optimized / DLL files
