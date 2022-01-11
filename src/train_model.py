@@ -23,15 +23,16 @@ class Trainer:
 
     def train_model(self):
         log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
         history = self.model.fit(
             x=self.train,
             validation_data=self.val,
             steps_per_epoch=self.train.cardinality().numpy(),
             epochs=self.epochs,
-            tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
-            )
+            callbacks=[tensorboard_callback])
             
+
         return history
 
     def set_learning_rate(self, learning_rate):
