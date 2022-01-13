@@ -23,7 +23,7 @@ class Trainer:
 
 
     def train_model(self):
-        logdir = 'gs://cjc-tensorboard-logs/'
+        logdir = '/content/imdb'
         tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
         history = self.model.fit(
             x=self.train,
