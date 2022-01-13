@@ -2,6 +2,7 @@ import tensorflow as tf
 from official.nlp import optimization
 from src.models.BERT_LR_Classifier import BERT_LR_Classifier
 import datetime
+import os
 
 class Trainer:
     def __init__(self, train, val, model, tpu_strategy=None):
@@ -22,11 +23,14 @@ class Trainer:
 
 
     def train_model(self):
+        logdir = 'gs://cjc-tensorboard-logs/'
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
         history = self.model.fit(
             x=self.train,
             validation_data=self.val,
             steps_per_epoch=self.train.cardinality().numpy(),
-            epochs=self.epochs)
+            epochs=self.epochs,
+            callbacks=[tensorboard_callback])
             
 
         return history
