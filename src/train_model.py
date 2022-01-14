@@ -69,5 +69,5 @@ def train_model(train, val, model_handle, learning_rate, epochs, callbacks=None)
     trainer = Trainer(train, val, model)
     trainer.compile_model(learning_rate, epochs)
     history = trainer.train_model(callbacks)
-    return history
+    return trainer.model, history
         

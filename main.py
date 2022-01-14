@@ -48,9 +48,9 @@ def main():
 
     if USE_TPU:
       with tpu_strategy.scope():
-        model = train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS, callbacks=LOG)
+        model, history = train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS, callbacks=LOG)
     else:
-        model = train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS, callbacks=LOG)
+        model, history = train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS, callbacks=LOG)
 
     #save model
     model.save(os.path.join('./saved_models/BERT_LR_Classifier', datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
