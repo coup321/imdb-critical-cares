@@ -17,6 +17,7 @@ PREPROCESSOR = 'BERT_LR_Preprocessor'
 MODEL = 'BERT_LR_Classifier'
 USE_TPU = True
 AUTOTUNE = tf.data.AUTOTUNE
+LOG = False
 
 preprocessor_dict = {
     'BERT_LR_Preprocessor':'https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3'
@@ -43,11 +44,12 @@ def main():
     processed_val = val.map(lambda x, y: (preprocessor(x), y)).cache().prefetch(AUTOTUNE)  
 
     #define model and train
+
     if USE_TPU:
       with tpu_strategy.scope():
-        train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS)
+        train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS, callbacks=LOG)
     else:
-        train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS)
+        train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS, callbacks=LOG)
 
 if __name__ =="__main__":
     main()

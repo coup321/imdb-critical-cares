@@ -22,17 +22,13 @@ class Trainer:
         self.model.compile(optimizer=optimizer, loss=loss, metrics=metrics)
 
 
-    def train_model(self):
-        logdir = '/content/imdb'
-        tensorboard_callback = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
+    def train_model(self, callbacks):
         history = self.model.fit(
             x=self.train,
             validation_data=self.val,
             steps_per_epoch=self.train.cardinality().numpy(),
             epochs=self.epochs,
-            callbacks=[tensorboard_callback])
-            
-
+            callbacks=callbacks)
         return history
 
     def set_learning_rate(self, learning_rate):
@@ -64,10 +60,14 @@ def load_tpu():
     print(f'Number of TPU workers: ', tpu_strategy.num_replicas_in_sync)
     return tpu_strategy
 
-def train_model(train, val, model_handle, learning_rate, epochs):
+def train_model(train, val, model_handle, learning_rate, epochs, callbacks=None):
+    if callbacks: 
+        logdir = 'gs://cjc-tensorboard-logs'
+        callbacks = tf.keras.callbacks.TensorBoard(logdir, histogram_freq=1)
+
     model = BERT_LR_Classifier(model_handle)
     trainer = Trainer(train, val, model)
     trainer.compile_model(learning_rate, epochs)
-    history = trainer.train_model()
+    history = trainer.train_model(callbacks)
     return history
         
