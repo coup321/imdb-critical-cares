@@ -53,8 +53,8 @@ def main():
         model, history = train_model(processed_train, processed_val, models[MODEL], LEARNING_RATE, EPOCHS, callbacks=LOG)
 
     #save model
-    with tf.device('/job:localhost'):
-        model.save(os.path.join('gs://cjc-tensorboard-logs', datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
+    
+    model.save(os.path.join('gs://cjc-tensorboard-logs', datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
 
 if __name__ =="__main__":
     main()
