@@ -54,7 +54,7 @@ def main():
 
     #save model
     
-    model.save(os.path.join('gs://cjc-tensorboard-logs', datetime.datetime.now().strftime("%Y%m%d-%H%M%S")))
+    model.save_weights(os.path.join('gs://cjc-tensorboard-logs', datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")))
 
 if __name__ =="__main__":
     main()
